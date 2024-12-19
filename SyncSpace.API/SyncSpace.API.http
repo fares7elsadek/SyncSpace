@@ -1,0 +1,6 @@
+@SyncSpace.API_HostAddress = http://localhost:5042
+
+GET {{SyncSpace.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
