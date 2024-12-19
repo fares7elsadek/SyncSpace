@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Builder;
+using SyncSpace.Infrastructure.Extensions;
 
 namespace SyncSpace.API
 {
@@ -12,6 +13,7 @@ namespace SyncSpace.API
             
 
             builder.Services.AddControllers();
+            builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             var app = builder.Build();

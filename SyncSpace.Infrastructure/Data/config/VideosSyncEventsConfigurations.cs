@@ -16,7 +16,7 @@ public class VideosSyncEventsConfigurations : IEntityTypeConfiguration<VideoSync
             .HasColumnType("decimal")
             .HasPrecision(10, 2);
         builder.Property(x => x.TriggeredAt)
-            .HasDefaultValueSql("GETDATE");
+            .HasDefaultValueSql("GETDATE()");
 
         builder.HasOne(x => x.User)
             .WithMany(x => x.VideoSyncEvents)
