@@ -35,6 +35,7 @@ namespace SyncSpace.API.Controllers
                 return BadRequest(authResponse);
             if (!string.IsNullOrEmpty(authResponse.RefreshToken))
                 SetRefreshTokenInCookie(authResponse.RefreshToken, authResponse.RefreshTokenExpiration);
+              
             return Ok(authResponse);
         }
 

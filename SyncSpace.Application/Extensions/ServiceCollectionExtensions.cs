@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -28,6 +29,11 @@ public static class ServiceCollectionExtensions
             .AddFluentValidationAutoValidation();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserContext, UserContext>();
+        services.Configure<FormOptions>(options =>
+        {
+            options.MultipartBodyLengthLimit = 5 * 1024 * 1024;
+        });
+        services.AddScoped<IFileService, FileService>();
     }
     public static void AddSerilog(this IHostBuilder host)
     {

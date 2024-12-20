@@ -73,6 +73,7 @@ public class AuthService : IAuthService
         var jwtSecurityToken = await CreateJwtToken(user);
         authResponse.Message = "User logged in succeefully";
         authResponse.IsAuthenticated = true;
+        authResponse.Id = user.Id;
         authResponse.Email = user.Email;
         authResponse.Username = user.UserName;
         authResponse.Roles = roles;

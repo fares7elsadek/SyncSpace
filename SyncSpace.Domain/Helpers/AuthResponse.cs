@@ -8,6 +8,7 @@ public class AuthResponse
     {
         Roles = new();
     }
+    public string Id { get; set; } = default!;
     public string Message { get; set; } = default!;
     public bool IsAuthenticated { get; set; }
     public string Username { get; set; } = default!;

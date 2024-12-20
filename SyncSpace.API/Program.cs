@@ -1,5 +1,7 @@
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.FileProviders;
+using Serilog;
 using SyncSpace.API.Extensions;
 using SyncSpace.API.Middlewares;
 using SyncSpace.Application.Extensions;
@@ -34,6 +36,17 @@ namespace SyncSpace.API
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseCors();
             app.UseHttpsRedirection();
+            app.UseSerilogRequestLogging();
+            string uploadsPath = Path.Combine(builder.Environment.ContentRootPath, "Uploads");
+            if (!Directory.Exists(uploadsPath))
+            {
+                Directory.CreateDirectory(uploadsPath);
+            }
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(uploadsPath),
+                RequestPath = "/Resources"
+            });
             app.UseAuthorization();
             app.MapControllers();
 

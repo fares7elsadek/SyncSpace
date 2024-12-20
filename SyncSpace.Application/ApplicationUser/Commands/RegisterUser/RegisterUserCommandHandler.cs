@@ -1,17 +1,19 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using SyncSpace.Application.Services;
 using SyncSpace.Domain.Constants;
 using SyncSpace.Domain.Entities;
 using SyncSpace.Domain.Exceptions;
 using SyncSpace.Domain.Helpers;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace SyncSpace.Application.ApplicationUser.Commands.RegisterUser;
 
 public class RegisterUserCommandHandler(UserManager<User> userManager,
-    IMapper mapper, IAuthService authService) : IRequestHandler<RegisterUserCommand, AuthResponse>
+    IMapper mapper, IAuthService authService, IWebHostEnvironment environment) : IRequestHandler<RegisterUserCommand, AuthResponse>
 {
     public async Task<AuthResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
@@ -22,8 +24,10 @@ public class RegisterUserCommandHandler(UserManager<User> userManager,
             return new AuthResponse { Message = "Username already exsit" };
 
         var user = mapper.Map<User>(request);
+        var ContentPath = environment.ContentRootPath;
+        var path = Path.Combine(ContentPath, "Uploads");
+        user.Avatar = Path.Combine(path, "Default.jpg");
         var result = await userManager.CreateAsync(user, request.Password);
-
         if (!result.Succeeded)
         {
             List<string> errors = new List<string>();
@@ -39,6 +43,7 @@ public class RegisterUserCommandHandler(UserManager<User> userManager,
             throw new CustomeException("Somthing wrong has happened");
         return new AuthResponse
         {
+            Id = user.Id,
             Message = "User registered successfully",
             Email = user.Email,
             IsAuthenticated = true,
