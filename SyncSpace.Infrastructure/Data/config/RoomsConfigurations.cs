@@ -15,10 +15,6 @@ public class RoomsConfigurations : IEntityTypeConfiguration<Rooms>
         builder.Property(x => x.VideoUrl)
             .HasColumnType("text");
 
-        builder.Property(x => x.CurrentTime)
-            .HasColumnType("decimal")
-            .HasPrecision(10, 2);
-
         builder.Property(x => x.CreatedAt)
             .HasDefaultValueSql("GETDATE()");
 

@@ -13,7 +13,7 @@ public class Rooms
     public User HostUser { get; set; } = default!;
     public string HostUserId { get; set; } = default!;
     public string? VideoUrl { get; set; } 
-    public decimal? CurrentTime { get; set; }
+    public TimeSpan? CurrentVideoTime { get; set; }
     public bool IsPlaying { get; set; } 
     public bool IsActive { get; set; }
     public DateTime CreatedAt { get; set; } = default!;
