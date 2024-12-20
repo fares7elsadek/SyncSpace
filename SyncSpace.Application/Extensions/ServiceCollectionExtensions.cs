@@ -21,6 +21,8 @@ public static class ServiceCollectionExtensions
                 policy.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
             });
         });
+
+
         services.AddHttpContextAccessor();
         var assemply = typeof(ServiceCollectionExtensions).Assembly;
         services.AddAutoMapper(assemply);

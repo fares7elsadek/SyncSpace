@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SyncSpace.Application.ChatRoom.Commands;
+using Microsoft.AspNetCore.SignalR;
+using SyncSpace.API.SignalR.Hubs;
 using SyncSpace.Application.Stream.Commands.ChangeStream;
 using SyncSpace.Application.Stream.Commands.PauseStream;
 using SyncSpace.Application.Stream.Commands.PlayStream;
@@ -20,10 +20,13 @@ namespace SyncSpace.API.Controllers
     {
         private readonly IMediator _mediator;
         private ApiResponse apiResponse;
-        public StreamController(IMediator mediator)
+        private readonly IHubContext<StreamingHub> _hubContext;
+        public StreamController(IMediator mediator,
+            IHubContext<StreamingHub> hubContext)
         {
             _mediator = mediator;
             apiResponse = new ApiResponse();
+            _hubContext = hubContext;
         }
 
         [HttpPost]
@@ -36,6 +39,7 @@ namespace SyncSpace.API.Controllers
         {
             command.RoomId = RoomId;
             await _mediator.Send(command);
+            await _hubContext.Clients.Group(RoomId).SendAsync("StreamStarted", command.VideoUrl);
             apiResponse.IsSuccess = true;
             apiResponse.StatusCode = HttpStatusCode.OK;
             apiResponse.Result = "Stream started !";
@@ -52,6 +56,7 @@ namespace SyncSpace.API.Controllers
         {
             command.RoomId = RoomId;
             await _mediator.Send(command);
+            await _hubContext.Clients.Group(RoomId).SendAsync("StreamChanged", command.VideoUrl);
             apiResponse.IsSuccess = true;
             apiResponse.StatusCode = HttpStatusCode.OK;
             apiResponse.Result = "Stream Changed !";
@@ -68,6 +73,7 @@ namespace SyncSpace.API.Controllers
         {
             
             await _mediator.Send(new PauseStreamCommand(RoomId));
+            await _hubContext.Clients.Group(RoomId).SendAsync("StreamPaused");
             apiResponse.IsSuccess = true;
             apiResponse.StatusCode = HttpStatusCode.OK;
             apiResponse.Result = "Stream Paused !";
@@ -85,6 +91,7 @@ namespace SyncSpace.API.Controllers
         {
 
             await _mediator.Send(new PlayStreamCommand(RoomId));
+            await _hubContext.Clients.Group(RoomId).SendAsync("StreamResumed");
             apiResponse.IsSuccess = true;
             apiResponse.StatusCode = HttpStatusCode.OK;
             apiResponse.Result = "Stream resumed !";
@@ -101,6 +108,7 @@ namespace SyncSpace.API.Controllers
         {
             command.RoomId = RoomId;
             await _mediator.Send(command);
+            await _hubContext.Clients.Group(RoomId).SendAsync("StreamSynced", command.Time);
             apiResponse.IsSuccess = true;
             apiResponse.StatusCode = HttpStatusCode.OK;
             apiResponse.Result = "Stream synced !";

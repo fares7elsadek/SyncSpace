@@ -4,6 +4,7 @@ using Microsoft.Extensions.FileProviders;
 using Serilog;
 using SyncSpace.API.Extensions;
 using SyncSpace.API.Middlewares;
+using SyncSpace.API.SignalR.Hubs;
 using SyncSpace.Application.Extensions;
 using SyncSpace.Infrastructure.Extensions;
 using SyncSpace.Infrastructure.Seeder;
@@ -22,34 +23,32 @@ namespace SyncSpace.API
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddPresentation();
             builder.Services.AddApplication();
+            builder.Services.AddSignalR();
             builder.Services.AddEndpointsApiExplorer();
             builder.Host.AddSerilog();
+            
             var app = builder.Build();
             SyncSpaceSeeder(app);
-
+            string uploadsPath = Path.Combine(builder.Environment.ContentRootPath, "Uploads");
 
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseCors();
             app.UseHttpsRedirection();
-            app.UseSerilogRequestLogging();
-            string uploadsPath = Path.Combine(builder.Environment.ContentRootPath, "Uploads");
-            if (!Directory.Exists(uploadsPath))
-            {
-                Directory.CreateDirectory(uploadsPath);
-            }
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(uploadsPath),
                 RequestPath = "/Resources"
             });
+            app.UseSerilogRequestLogging();
             app.UseAuthorization();
+            app.MapHub<StreamingHub>("/streamingHub");
             app.MapControllers();
-
             app.Run();
         }
         public static void SyncSpaceSeeder(WebApplication app)

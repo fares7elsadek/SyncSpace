@@ -1,8 +1,11 @@
 ﻿using MediatR;
+using System.Text.Json.Serialization;
 
 namespace SyncSpace.Application.Room.Commands.LeaveRoom;
 
-public class LeaveRoomCommand(string roomId):IRequest
+public class LeaveRoomCommand:IRequest
 {
-    public string RoomId { get; set; } = roomId;
+    [JsonIgnore]
+    public string? RoomId { get; set; }
+    public string ConnectionId { get; set; } = default!;
 }

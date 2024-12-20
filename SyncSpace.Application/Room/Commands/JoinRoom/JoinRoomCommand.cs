@@ -1,8 +1,11 @@
 ﻿using MediatR;
+using System.Text.Json.Serialization;
 
 namespace SyncSpace.Application.Room.Commands.JoinRoom;
 
-public class JoinRoomCommand(string roomId):IRequest
+public class JoinRoomCommand:IRequest
 {
-    public string RoomId { get; set; } = roomId;
+    [JsonIgnore]
+    public string? RoomId { get; set; }
+    public string ConnectionId { get; set; } = default!;
 }

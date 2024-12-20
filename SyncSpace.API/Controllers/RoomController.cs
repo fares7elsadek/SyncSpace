@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using SyncSpace.API.SignalR.Hubs;
 using SyncSpace.Application.Room.Commands.AddUserToRoom;
 using SyncSpace.Application.Room.Commands.CreateRoom;
 using SyncSpace.Application.Room.Commands.JoinRoom;
@@ -21,9 +23,11 @@ namespace SyncSpace.API.Controllers
     {
         private readonly IMediator _mediator;
         private ApiResponse apiResponse;
-        public RoomController(IMediator mediator)
+        private readonly IHubContext<StreamingHub> _hubContext;
+        public RoomController(IMediator mediator, IHubContext<StreamingHub> hubContext)
         {
             _mediator = mediator;
+            _hubContext = hubContext;
             apiResponse = new ApiResponse();
         }
 
@@ -97,10 +101,11 @@ namespace SyncSpace.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse>> JoinRoom([FromRoute] string RoomId)
+        public async Task<ActionResult<ApiResponse>> JoinRoom([FromRoute] string RoomId, JoinRoomCommand command)
         {
-            var command = new JoinRoomCommand(RoomId);
+            command.RoomId = RoomId;
             await _mediator.Send(command);
+            await _hubContext.Groups.AddToGroupAsync(command.ConnectionId, RoomId);
             apiResponse.IsSuccess = true;
             apiResponse.StatusCode = HttpStatusCode.OK;
             apiResponse.Result = "User Joined successfully";
@@ -113,10 +118,11 @@ namespace SyncSpace.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse>> LeaveRoom([FromRoute] string RoomId)
+        public async Task<ActionResult<ApiResponse>> LeaveRoom([FromRoute] string RoomId, LeaveRoomCommand command)
         {
-            var command = new LeaveRoomCommand(RoomId);
+            command.RoomId = RoomId;
             await _mediator.Send(command);
+            await _hubContext.Groups.RemoveFromGroupAsync(command.ConnectionId, RoomId);
             apiResponse.IsSuccess = true;
             apiResponse.StatusCode = HttpStatusCode.OK;
             apiResponse.Result = "User Leaved successfully";
