@@ -1,5 +1,3 @@
-
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
 using SyncSpace.API.Extensions;
@@ -17,21 +15,25 @@ namespace SyncSpace.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            
 
+            builder.Services.AddSignalR();
             builder.Services.AddControllers();
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddPresentation();
             builder.Services.AddApplication();
-            builder.Services.AddSignalR();
+            
             builder.Services.AddEndpointsApiExplorer();
             builder.Host.AddSerilog();
+            
             
             var app = builder.Build();
             SyncSpaceSeeder(app);
             string uploadsPath = Path.Combine(builder.Environment.ContentRootPath, "Uploads");
-
-            if (app.Environment.IsDevelopment())
+            if (!Directory.Exists(uploadsPath))
+            {
+                Directory.CreateDirectory(uploadsPath);
+            }
+            if (true)
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
@@ -47,7 +49,7 @@ namespace SyncSpace.API
             });
             app.UseSerilogRequestLogging();
             app.UseAuthorization();
-            app.MapHub<StreamingHub>("/streamingHub");
+            app.MapHub<StreamingHub>("/streaminghub");
             app.MapControllers();
             app.Run();
         }

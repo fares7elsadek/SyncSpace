@@ -18,7 +18,10 @@ public static class ServiceCollectionExtensions
             options.AddDefaultPolicy(
             policy =>
             {
-                policy.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+                policy.WithOrigins("*")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+                
             });
         });
 
