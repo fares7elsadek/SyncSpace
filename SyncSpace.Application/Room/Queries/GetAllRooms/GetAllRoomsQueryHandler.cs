@@ -10,7 +10,7 @@ public class GetAllRoomsQueryHandler(IUnitOfWork unitOfWork,
 {
     public async Task<IEnumerable<RoomDto>> Handle(GetAllRoomsQuery request, CancellationToken cancellationToken)
     {
-        var rooms =  await unitOfWork.Room.GetAllAsync(IncludeProperties: "Participants,HostUser");
+        var rooms =  await unitOfWork.Room.GetAllAsync(IncludeProperties: "Participants,HostUser,Messages");
         var roomsDto = mapper.Map<IEnumerable<RoomDto>>(rooms);
         return roomsDto;
     }

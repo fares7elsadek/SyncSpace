@@ -12,7 +12,7 @@ public class GetRoomByIdQueryHandler(IUnitOfWork unitOfWork,
     public async Task<RoomDto> Handle(GetRoomByIdQuery request, CancellationToken cancellationToken)
     {
         var room = await unitOfWork.Room.GetOrDefalutAsync(p => p.RoomId == request.RoomId,
-            IncludeProperties: "Participants,HostUser");
+            IncludeProperties: "Participants,HostUser,Messages");
         if(room == null)
             throw new NotFoundException(nameof(room),request.RoomId);
         var roomDto = mapper.Map<RoomDto>(room);

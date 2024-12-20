@@ -17,6 +17,10 @@ public class RoomProfile:Profile
         {
             opt.MapFrom(src => src.Participants);
         })
+        .ForMember(d => d.Messages, opt =>
+        {
+            opt.MapFrom(src => src.Messages);
+        })
             .ReverseMap();
     }
 }
