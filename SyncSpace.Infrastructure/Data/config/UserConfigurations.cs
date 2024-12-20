@@ -14,5 +14,7 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
 
         builder.Property(x => x.Avatar)
             .HasColumnType("text");
+
+        builder.OwnsMany(x => x.RefreshTokens);
     }
 }

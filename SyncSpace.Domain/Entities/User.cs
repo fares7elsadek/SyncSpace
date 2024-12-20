@@ -15,6 +15,6 @@ public class User:IdentityUser
     public ICollection<Rooms> HostingRooms { get; set; }
     public ICollection<RoomParticipants> ParticipatedRooms { get; set; }
     public ICollection<Messages> RoomMessages { get; set; }
-
     public ICollection<VideoSyncEvents> VideoSyncEvents { get; set; }
+    public List<RefreshToken>? RefreshTokens { get; set; }
 }
