@@ -15,13 +15,12 @@ public static class ServiceCollectionExtensions
     {
         services.AddCors(options =>
         {
-            options.AddDefaultPolicy(
-            policy =>
+            options.AddPolicy("SignalRPolicy", policy =>
             {
-                policy.WithOrigins("*")
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-                
+                policy.AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials()
+                      .SetIsOriginAllowed(origin => true);
             });
         });
 

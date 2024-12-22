@@ -40,14 +40,16 @@ namespace SyncSpace.API
             }
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
-            app.UseCors();
-            app.UseHttpsRedirection();
+            app.UseSerilogRequestLogging();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(uploadsPath),
                 RequestPath = "/Resources"
             });
-            app.UseSerilogRequestLogging();
+            app.UseRouting();
+            app.UseCors("SignalRPolicy");
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapHub<StreamingHub>("/streaminghub");
             app.MapControllers();
