@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using SyncSpace.API.SignalR.Hubs;
 using SyncSpace.Application.ChatRoom.Commands;
 using SyncSpace.Application.ChatRoom.Queries.GetRoomChat;
+using SyncSpace.Domain.Entities;
 using SyncSpace.Domain.Helpers;
 using System.Net;
 
@@ -15,10 +18,12 @@ namespace SyncSpace.API.Controllers
     {
         private readonly IMediator _mediator;
         private ApiResponse apiResponse;
-        public ChatController(IMediator mediator)
+        private readonly IHubContext<StreamingHub> _hubContext;
+        public ChatController(IMediator mediator, IHubContext<StreamingHub> hubContext)
         {
             _mediator = mediator;
             apiResponse = new ApiResponse();
+            _hubContext = hubContext;
         }
 
         [HttpPost]
@@ -30,6 +35,7 @@ namespace SyncSpace.API.Controllers
         public async Task<ActionResult<ApiResponse>> SendMessage([FromBody] SendMessageCommand command)
         {
             var message = await _mediator.Send(command);
+            await _hubContext.Clients.Group(message.RoomId).SendAsync("ReceiveMessage", message);
             apiResponse.IsSuccess = true;
             apiResponse.StatusCode = HttpStatusCode.OK;
             apiResponse.Result = message;
@@ -42,7 +48,7 @@ namespace SyncSpace.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse>> SendMessage([FromRoute] string roomId)
+        public async Task<ActionResult<ApiResponse>> GetRoomChat([FromRoute] string roomId)
         {
             var messages = await _mediator.Send(new GetRoomChatQuery(roomId));
             apiResponse.IsSuccess = true;

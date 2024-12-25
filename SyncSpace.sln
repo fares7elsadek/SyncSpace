@@ -1,15 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncSpace.API", "SyncSpace.API\SyncSpace.API.csproj", "{E10CBEFA-C14B-43E3-9767-E5D40062C662}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1ED305EE-3A19-46EC-81D4-93DD1B36D750}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncSpace.Application", "SyncSpace.Application\SyncSpace.Application.csproj", "{28DEBDD6-69D1-4E76-A6B5-0F1DE04D6A5E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B9F24109-3E61-4075-B8DE-8C9C3061F0F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncSpace.Domain", "SyncSpace.Domain\SyncSpace.Domain.csproj", "{3FE54FF3-F79B-4008-A193-25FEC9AD7250}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncSpace.API", "src\SyncSpace.API\SyncSpace.API.csproj", "{672393F8-A4E7-4C30-898C-E95630593976}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncSpace.Infrastructure", "SyncSpace.Infrastructure\SyncSpace.Infrastructure.csproj", "{151E9D3A-1D96-4DF7-80C5-98A2BBA2EB4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncSpace.Application", "src\SyncSpace.Application\SyncSpace.Application.csproj", "{12A0C58F-2C3C-463F-AA1F-FBA2329B4ADC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncSpace.Domain", "src\SyncSpace.Domain\SyncSpace.Domain.csproj", "{01B1ACFE-9202-4DC5-A1A1-72E00C216588}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncSpace.Infrastructure", "src\SyncSpace.Infrastructure\SyncSpace.Infrastructure.csproj", "{F6FA8025-19D0-400D-B348-98C6340D15F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncSpace.ApplicationTests", "tests\SyncSpace.ApplicationTests\SyncSpace.ApplicationTests.csproj", "{3E7E0497-0446-4D1E-A6E4-7A7C72EE0FD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncSpace.APITests", "src\SyncSpace.APITests\SyncSpace.APITests.csproj", "{E10941D0-2281-4A54-920F-0EAE83CB3C1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,24 +25,40 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E10CBEFA-C14B-43E3-9767-E5D40062C662}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E10CBEFA-C14B-43E3-9767-E5D40062C662}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E10CBEFA-C14B-43E3-9767-E5D40062C662}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E10CBEFA-C14B-43E3-9767-E5D40062C662}.Release|Any CPU.Build.0 = Release|Any CPU
-		{28DEBDD6-69D1-4E76-A6B5-0F1DE04D6A5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28DEBDD6-69D1-4E76-A6B5-0F1DE04D6A5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28DEBDD6-69D1-4E76-A6B5-0F1DE04D6A5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28DEBDD6-69D1-4E76-A6B5-0F1DE04D6A5E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3FE54FF3-F79B-4008-A193-25FEC9AD7250}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3FE54FF3-F79B-4008-A193-25FEC9AD7250}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3FE54FF3-F79B-4008-A193-25FEC9AD7250}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3FE54FF3-F79B-4008-A193-25FEC9AD7250}.Release|Any CPU.Build.0 = Release|Any CPU
-		{151E9D3A-1D96-4DF7-80C5-98A2BBA2EB4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{151E9D3A-1D96-4DF7-80C5-98A2BBA2EB4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{151E9D3A-1D96-4DF7-80C5-98A2BBA2EB4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{151E9D3A-1D96-4DF7-80C5-98A2BBA2EB4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{672393F8-A4E7-4C30-898C-E95630593976}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{672393F8-A4E7-4C30-898C-E95630593976}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{672393F8-A4E7-4C30-898C-E95630593976}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{672393F8-A4E7-4C30-898C-E95630593976}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12A0C58F-2C3C-463F-AA1F-FBA2329B4ADC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12A0C58F-2C3C-463F-AA1F-FBA2329B4ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12A0C58F-2C3C-463F-AA1F-FBA2329B4ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12A0C58F-2C3C-463F-AA1F-FBA2329B4ADC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01B1ACFE-9202-4DC5-A1A1-72E00C216588}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01B1ACFE-9202-4DC5-A1A1-72E00C216588}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01B1ACFE-9202-4DC5-A1A1-72E00C216588}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01B1ACFE-9202-4DC5-A1A1-72E00C216588}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6FA8025-19D0-400D-B348-98C6340D15F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6FA8025-19D0-400D-B348-98C6340D15F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6FA8025-19D0-400D-B348-98C6340D15F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6FA8025-19D0-400D-B348-98C6340D15F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E7E0497-0446-4D1E-A6E4-7A7C72EE0FD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E7E0497-0446-4D1E-A6E4-7A7C72EE0FD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E7E0497-0446-4D1E-A6E4-7A7C72EE0FD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E7E0497-0446-4D1E-A6E4-7A7C72EE0FD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E10941D0-2281-4A54-920F-0EAE83CB3C1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E10941D0-2281-4A54-920F-0EAE83CB3C1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E10941D0-2281-4A54-920F-0EAE83CB3C1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E10941D0-2281-4A54-920F-0EAE83CB3C1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{672393F8-A4E7-4C30-898C-E95630593976} = {1ED305EE-3A19-46EC-81D4-93DD1B36D750}
+		{12A0C58F-2C3C-463F-AA1F-FBA2329B4ADC} = {1ED305EE-3A19-46EC-81D4-93DD1B36D750}
+		{01B1ACFE-9202-4DC5-A1A1-72E00C216588} = {1ED305EE-3A19-46EC-81D4-93DD1B36D750}
+		{F6FA8025-19D0-400D-B348-98C6340D15F5} = {1ED305EE-3A19-46EC-81D4-93DD1B36D750}
+		{3E7E0497-0446-4D1E-A6E4-7A7C72EE0FD6} = {B9F24109-3E61-4075-B8DE-8C9C3061F0F3}
+		{E10941D0-2281-4A54-920F-0EAE83CB3C1C} = {B9F24109-3E61-4075-B8DE-8C9C3061F0F3}
 	EndGlobalSection
 EndGlobal

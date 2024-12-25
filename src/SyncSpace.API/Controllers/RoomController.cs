@@ -12,7 +12,6 @@ using SyncSpace.Application.Room.Commands.RemoveUserFromRoom;
 using SyncSpace.Application.Room.Commands.UpdateRoom;
 using SyncSpace.Application.Room.Queries.GetAllRooms;
 using SyncSpace.Application.Room.Queries.GetRoomById;
-using SyncSpace.Domain.Entities;
 using SyncSpace.Domain.Helpers;
 using System.Net;
 
@@ -125,6 +124,7 @@ namespace SyncSpace.API.Controllers
             command.RoomId = RoomId;
             await _mediator.Send(command);
             await _hubContext.Groups.RemoveFromGroupAsync(command.ConnectionId, RoomId);
+            await _hubContext.Clients.Group(RoomId).SendAsync("UserLeft", command.ConnectionId);
             apiResponse.IsSuccess = true;
             apiResponse.StatusCode = HttpStatusCode.OK;
             apiResponse.Result = "User Leaved successfully";
