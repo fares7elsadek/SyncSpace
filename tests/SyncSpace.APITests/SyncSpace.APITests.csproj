@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SyncSpace.API\SyncSpace.API.csproj" />
+    <ProjectReference Include="..\..\src\SyncSpace.API\SyncSpace.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>
