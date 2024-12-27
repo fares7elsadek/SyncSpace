@@ -1,12 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using SyncSpace.API.SignalR.Hubs;
 using SyncSpace.Application.ChatRoom.Commands;
 using SyncSpace.Application.ChatRoom.Queries.GetRoomChat;
-using SyncSpace.Domain.Entities;
 using SyncSpace.Domain.Helpers;
 using System.Net;
 
