@@ -1,6 +1,8 @@
 # SyncSpace Project
 
-## Table of Contents
+---
+
+## **Table of Contents**
 
 - [Overview](#overview)
 - [Features](#features)
@@ -13,102 +15,157 @@
 - [Setup and Deployment](#setup-and-deployment)
 - [Contribution Guidelines](#contribution-guidelines)
 
-## Overview
+---
 
-SyncSpace is a robust social media platform developed using .NET, following Clean Architecture principles, and incorporating advanced features such as CQRS, MediatR, JWT authentication with refresh tokens, real-time communication using SignalR, and Serilog for structured logging.
+## **Overview**
 
-This project demonstrates my proficiency in designing scalable, maintainable systems with a focus on performance and security.
+**SyncSpace** is a robust social media platform developed using **.NET 9.0**, designed to enable seamless communication and interaction. It incorporates:
 
-## Features
+- **Clean Architecture principles** for maintainability.
+- Advanced features like **CQRS**, **MediatR**, and **SignalR** for real-time communication.
+- **JWT authentication** for secure access and refresh tokens for extended sessions.
 
-- **User Authentication**: Includes registration, login, and refresh token support.
-- **Chat Rooms**: Real-time messaging within rooms powered by SignalR.
-- **Streaming**: Real-time video streaming in rooms using SignalR.
-- **Clean Code**: Follows Clean Architecture principles for separation of concerns.
-- **Extensive Logging**: Implements Serilog for logging and debugging.
-- **Testing**: Comprehensive unit testing with xUnit.
+> **Why SyncSpace?**
+> This project showcases scalable system design while prioritizing performance and security.
 
-## Architecture
+---
 
-This project adopts the Clean Architecture pattern:
+## **Features**
 
-- **Core Layer**: Contains business logic and domain entities.
-- **Application Layer**: Implements CQRS pattern with MediatR and includes validation using Fluent Validation.
-- **Infrastructure Layer**: Provides implementations for repository patterns and Unit of Work.
-- **API Layer**: Defines controllers and exposes APIs.
+### ✨ Key Highlights:
 
-### Patterns Used
+- 🔐 **User Authentication**: Secure login and token-based access.
+- 💬 **Chat Rooms**: Real-time chat functionality with SignalR.
+- 🎥 **Streaming**: Real-time video synchronization in chat rooms.
+- 📚 **Clean Code**: Based on Clean Architecture principles.
+- 🔧 **Comprehensive Logging**: Debug-friendly with Serilog.
+- ✅ **Testing**: Fully tested with xUnit framework.
 
-- **CQRS with MediatR**: For segregating read and write operations.
-- **Repository Pattern with Unit of Work**: Ensures encapsulation of data access logic.
-- **Dependency Injection**: For managing dependencies.
+---
 
-## Technologies Used
+## **Architecture**
 
-- **Framework**: .NET 9.0
-- **Languages**: C#
-- **Real-Time Communication**: SignalR
-- **Authentication**: JWT, Refresh Tokens
-- **Validation**: Fluent Validation
-- **Unit Testing**: xUnit
-- **Logging**: Serilog
-- **API Documentation**: Swagger
+**Clean Architecture** is at the heart of SyncSpace:
 
-## Controllers and API Functionality
+![](https://via.placeholder.com/800x400?text=Clean+Architecture+Diagram)
 
-### AuthController
+### 🔧 Layers:
 
-- **Endpoints**:
-  - `POST /register`: Registers a new user.
-  - `POST /login`: Authenticates a user and issues a JWT token.
-  - `GET /refreshToken`: Generates a new JWT using a refresh token stored in cookies.
+1. **Core Layer**:
+   - Business logic
+   - Domain entities
+2. **Application Layer**:
+   - Implements **CQRS** with **MediatR**
+   - Validation using **FluentValidation**
+3. **Infrastructure Layer**:
+   - Repository patterns and Unit of Work
+4. **API Layer**:
+   - Exposes RESTful endpoints
 
-### ChatController
+### Patterns Used:
 
-- **Endpoints**:
-  - `POST /`: Sends a message to a chat room and broadcasts it.
-  - `GET /{roomId}`: Retrieves chat history for a specific room.
+- **CQRS with MediatR**: Separation of read/write operations.
+- **Repository Pattern with Unit of Work**: Encapsulation of data access logic.
+- **Dependency Injection**: Easy maintainability and testing.
 
-### RoomController
+---
 
-- **Endpoints**:
-  - `POST /new`: Creates a new chat room.
-  - `PUT /update`: Updates an existing room's details.
-  - `DELETE /{roomId}`: Deletes a room.
-  - `POST /{roomId}/{userId}/add`: Adds a user to a room.
-  - `POST /{roomId}/join`: Joins a user to a room.
-  - `POST /{roomId}/leave`: Removes a user from a room.
-  - `GET /`: Fetches all available rooms.
-  - `GET /{roomId}`: Retrieves details of a specific room.
+## **Technologies Used**
 
-### StreamController
+| Technology           | Purpose                       |
+| -------------------- | ----------------------------- |
+| **.NET 9.0**         | Framework for the application |
+| **C#**               | Core programming language     |
+| **SignalR**          | Real-time communication       |
+| **JWT**              | Secure authentication         |
+| **FluentValidation** | Input validation framework    |
+| **xUnit**            | Unit testing framework        |
+| **Serilog**          | Logging and debugging         |
+| **Swagger**          | API documentation             |
 
-- **Endpoints**:
-  - `POST`: Starts a new stream in a room.
-  - `PUT`: Changes the stream URL.
-  - Additional methods for syncing, pausing, and resuming the stream.
+---
 
-## Testing
+## **Controllers and API Functionality**
+
+### 🔑 **AuthController**
+
+| Method | Endpoint        | Description                    |
+| ------ | --------------- | ------------------------------ |
+| `POST` | `/register`     | Registers a new user           |
+| `POST` | `/login`        | Authenticates and issues a JWT |
+| `GET`  | `/refreshToken` | Refreshes a JWT using cookies  |
+
+---
+
+### 🔧 **ChatController**
+
+| Method | Endpoint    | Description                                |
+| ------ | ----------- | ------------------------------------------ |
+| `POST` | `/`         | Sends a message and broadcasts it          |
+| `GET`  | `/{roomId}` | Retrieves chat history for a specific room |
+
+---
+
+### 🏢 **RoomController**
+
+| Method   | Endpoint                 | Description                 |
+| -------- | ------------------------ | --------------------------- |
+| `POST`   | `/new`                   | Creates a new chat room     |
+| `PUT`    | `/update`                | Updates room details        |
+| `DELETE` | `/{roomId}`              | Deletes a room              |
+| `POST`   | `/{roomId}/{userId}/add` | Adds a user to a room       |
+| `POST`   | `/{roomId}/join`         | Joins a user to a room      |
+| `POST`   | `/{roomId}/leave`        | Removes a user from a room  |
+| `GET`    | `/`                      | Fetches all available rooms |
+| `GET`    | `/{roomId}`              | Retrieves room details      |
+
+---
+
+### 🎥 **StreamController**
+
+| Method | Endpoint | Description                   |
+| ------ | -------- | ----------------------------- |
+| `POST` | `/`      | Starts a new stream in a room |
+| `PUT`  | `/`      | Changes the stream URL        |
+
+Additional endpoints handle syncing, pausing, and resuming streams.
+
+---
+
+## **Testing**
 
 - **Framework**: xUnit
-- **Tests Covered**:
+- **Coverage**:
   - Unit tests for commands and queries.
-  - SignalR connection and message broadcasting.
-  - Validation rules using Fluent Validation.
+  - SignalR message broadcasting.
+  - FluentValidation rule tests.
 
-## Authentication and Security
+---
 
-- **JWT Tokens**: Used for stateless authentication.
-- **Refresh Tokens**: Implements secure token refresh mechanism using cookies.
-- **Authorization**: Secures endpoints with role-based authorization.
+## **Authentication and Security**
 
-## SignalR Streaming and Chatting
+- **JWT Tokens**: Stateless authentication.
+- **Refresh Tokens**: Secure token refresh with cookies.
+- **Role-Based Authorization**: Protects API endpoints.
 
-- Real-time communication using SignalR hubs.
-- Broadcasting messages to groups for chat functionality.
-- Managing video streaming start, pause, and resume actions.
+---
 
-## Setup and Deployment
+## **SignalR Streaming and Chatting**
+
+- Real-time communication with SignalR hubs.
+- Broadcasts messages to chat room groups.
+- Stream synchronization features (start, pause, resume).
+
+---
+
+## **Setup and Deployment**
+
+### ⚙ Prerequisites:
+
+- **.NET 9.0 SDK** installed.
+- Database setup (e.g., SQL Server).
+
+### 📝 Steps:
 
 1. **Clone Repository**:
    ```bash
@@ -127,9 +184,19 @@ This project adopts the Clean Architecture pattern:
    ```bash
    dotnet run
    ```
-5. Access Swagger UI for API testing at `http://localhost:<port>/swagger`.
+5. Access **Swagger UI** at:
+   ```
+   http://localhost:<port>/swagger
+   ```
 
-## Contribution Guidelines
+---
 
-- Fork the repository and create a branch for your feature.
-- Ensure proper documentation and testing before creating a pull request.
+## **Contribution Guidelines**
+
+We welcome contributions! 🚀
+
+1. **Fork Repository**: Create your feature branch.
+2. **Document and Test**: Ensure changes are well-documented and tested.
+3. **Submit Pull Request**: Describe your changes in detail.
+
+---
