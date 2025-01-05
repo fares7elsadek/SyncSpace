@@ -13,8 +13,8 @@ public class FileService(IWebHostEnvironment environment) : IFileService
         {
             throw new ArgumentNullException(nameof(FileName));
         }
-        var contentPath = environment.ContentRootPath;
-        var path = Path.Combine(contentPath, $"Uploads", FileName);
+        var contentPath = environment.WebRootPath;
+        var path = Path.Combine(contentPath, $"avatars", FileName);
 
         if (!File.Exists(path))
         {
@@ -27,8 +27,8 @@ public class FileService(IWebHostEnvironment environment) : IFileService
     {
         if (file == null) throw new ArgumentNullException(nameof(file));
 
-        var ContentPath = environment.ContentRootPath;
-        var path = Path.Combine(ContentPath, "Uploads");
+        var ContentPath = environment.WebRootPath;
+        var path = Path.Combine(ContentPath, "avatars");
 
         if (!Directory.Exists(path)) Directory.CreateDirectory(path);
         var ext = Path.GetExtension(file.FileName);

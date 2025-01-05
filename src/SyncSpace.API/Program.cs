@@ -20,7 +20,7 @@ namespace SyncSpace.API
             builder.Services.AddControllers();
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddPresentation();
-            builder.Services.AddApplication();
+            builder.Services.AddApplication(builder.Configuration);
             
             builder.Services.AddEndpointsApiExplorer();
             builder.Host.AddSerilog();
@@ -28,11 +28,7 @@ namespace SyncSpace.API
             
             var app = builder.Build();
             SyncSpaceSeeder(app);
-            string uploadsPath = Path.Combine(builder.Environment.ContentRootPath, "Uploads");
-            if (!Directory.Exists(uploadsPath))
-            {
-                Directory.CreateDirectory(uploadsPath);
-            }
+            
             if (true)
             {
                 app.UseSwagger();
@@ -41,12 +37,8 @@ namespace SyncSpace.API
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseSerilogRequestLogging();
-            //app.UseHttpsRedirection();
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(uploadsPath),
-                RequestPath = "/Resources"
-            });
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseCors("SignalRPolicy");
             app.UseAuthentication();

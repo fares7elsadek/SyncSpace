@@ -17,6 +17,8 @@ public class LoginUserCommandHandler(UserManager<User> userManager,
         var user = await userManager.FindByEmailAsync(email);
         if (user == null || !await userManager.CheckPasswordAsync(user, password))
             throw new CustomeException("Email or password is incorrect");
+        if(!await userManager.IsEmailConfirmedAsync(user))
+            throw new CustomeException("Please confirm your email first");
         var roles = await userManager.GetRolesAsync(user);
         var authResponse = await authService.GetJwtToken(user, roles.ToList());
         return authResponse;
