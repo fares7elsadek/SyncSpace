@@ -15,7 +15,6 @@ namespace SyncSpace.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-
             builder.Services.AddSignalR();
             builder.Services.AddControllers();
             builder.Services.AddInfrastructure(builder.Configuration);
