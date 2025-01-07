@@ -51,13 +51,71 @@ public class EmailService(IOptions<EmailProvider> options) : IEmailSender<User>
         }
     }
 
-    public Task SendPasswordResetCodeAsync(User user, string email, string resetCode)
+    public async Task SendPasswordResetCodeAsync(User user, string email, string resetCode)
     {
-        throw new NotImplementedException();
+        using var message = new MailMessage
+        {
+            From = new MailAddress(_smtpEmail),
+            Subject = "Password reset code",
+            Body = EmailTemplate.PasswordResetEmailCode(resetCode),
+            IsBodyHtml = true
+        };
+
+        message.To.Add(email);
+
+        using var smtpClient = new SmtpClient(_smtpHost, _smtpPort)
+        {
+            Credentials = new NetworkCredential(_smtpEmail, _smtpPassword),
+            EnableSsl = _enableSsl,
+        };
+
+        try
+        {
+            await smtpClient.SendMailAsync(message);
+        }
+        catch (SmtpException smtpEx)
+        {
+            Log.Fatal($"SMTP Error: {smtpEx.Message}");
+            throw new CustomeException($"SMTP Error: {smtpEx.Message}");
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal($"SMTP Error: {ex.Message}");
+            throw new CustomeException($"SMTP Error: {ex.Message}");
+        }
     }
 
-    public Task SendPasswordResetLinkAsync(User user, string email, string resetLink)
+    public async Task SendPasswordResetLinkAsync(User user, string email, string resetLink)
     {
-        throw new NotImplementedException();
+        using var message = new MailMessage
+        {
+            From = new MailAddress(_smtpEmail),
+            Subject = "Confirm your email",
+            Body = EmailTemplate.PasswordResetEmailLink(resetLink),
+            IsBodyHtml = true
+        };
+
+        message.To.Add(email);
+
+        using var smtpClient = new SmtpClient(_smtpHost, _smtpPort)
+        {
+            Credentials = new NetworkCredential(_smtpEmail, _smtpPassword),
+            EnableSsl = _enableSsl,
+        };
+
+        try
+        {
+            await smtpClient.SendMailAsync(message);
+        }
+        catch (SmtpException smtpEx)
+        {
+            Log.Fatal($"SMTP Error: {smtpEx.Message}");
+            throw new CustomeException($"SMTP Error: {smtpEx.Message}");
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal($"SMTP Error: {ex.Message}");
+            throw new CustomeException($"SMTP Error: {ex.Message}");
+        }
     }
 }

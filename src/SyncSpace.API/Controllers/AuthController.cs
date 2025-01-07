@@ -1,12 +1,15 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using SyncSpace.Application.ApplicationUser.Commands.ConfirmEmail;
 using SyncSpace.Application.ApplicationUser.Commands.CreateRefreshToken;
+using SyncSpace.Application.ApplicationUser.Commands.ForgetPassword;
 using SyncSpace.Application.ApplicationUser.Commands.LoginUser;
 using SyncSpace.Application.ApplicationUser.Commands.RegisterUser;
 using SyncSpace.Application.ApplicationUser.Commands.ResendConfirmationLink;
+using SyncSpace.Application.ApplicationUser.Commands.ResetPassword;
 using SyncSpace.Domain.Exceptions;
 using SyncSpace.Domain.Helpers;
 using System.Net;
@@ -101,6 +104,56 @@ namespace SyncSpace.API.Controllers
             apiResponse.Result = authResponse;
             return Ok(apiResponse);
         }
+
+
+        [HttpPost("forgetPassword")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> ForgetPassword([FromBody] ForgetPasswordCommand command)
+        {
+            var response = await _mediator.Send(command);
+            
+            apiResponse.IsSuccess = true;
+            apiResponse.Errors = null;
+            apiResponse.StatusCode = HttpStatusCode.OK;
+            apiResponse.Result = response;
+            return Ok(apiResponse);
+        }
+
+        [HttpPost("{UserId}/{Token}/reset-password", Name = "reset-password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordCommand command,[FromRoute]string UserId,
+            [FromRoute]string Token)
+        {
+            var newCommand = new ResetPasswordCommand
+            {
+                UserId = UserId,
+                Token = Token,
+                NewPassword = command.NewPassword
+            };
+            var response = await _mediator.Send(newCommand);
+            if (response == "Your password has been successfully reset.")
+            {
+                apiResponse.IsSuccess = true;
+                apiResponse.Errors = null;
+                apiResponse.StatusCode = HttpStatusCode.OK;
+                apiResponse.Result = response;
+                return Ok(apiResponse);
+            }
+            apiResponse.IsSuccess = false;
+            apiResponse.Errors = null;
+            apiResponse.StatusCode = HttpStatusCode.BadRequest;
+            apiResponse.Result = response;
+            return BadRequest(apiResponse);
+        }
+
 
         [HttpGet("refreshToken")]
         [ProducesResponseType(StatusCodes.Status200OK)]

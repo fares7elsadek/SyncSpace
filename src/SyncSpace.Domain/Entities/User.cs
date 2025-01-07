@@ -13,6 +13,8 @@ public class User:IdentityUser
     }
     public string? Avatar { get; set; }
     public string? LastEmailConfirmationToken { get; set; }
+    public DateTime? ForgetPasswordResetCodeRequestedAt { get; set; }
+    public DateTime? PasswordResetTokenRequestedAt { get; set; }
     public ICollection<Rooms> HostingRooms { get; set; }
     public ICollection<RoomParticipants> ParticipatedRooms { get; set; }
     public ICollection<Messages> RoomMessages { get; set; }
