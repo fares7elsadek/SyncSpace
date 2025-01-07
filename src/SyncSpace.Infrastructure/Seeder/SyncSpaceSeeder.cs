@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SyncSpace.Domain.Constants;
 using SyncSpace.Infrastructure.Data;
 
@@ -10,6 +11,10 @@ public class SyncSpaceSeeder(AppDbContext db) : ISyncSpaceSeeder
 {
     public async Task Seed()
     {
+        if (db.Database.GetPendingMigrations().Any())
+        {
+            await db.Database.MigrateAsync();
+        }
         if (await db.Database.CanConnectAsync())
         {
             if (!db.Roles.Any())

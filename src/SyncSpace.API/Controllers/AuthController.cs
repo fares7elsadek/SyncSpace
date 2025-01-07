@@ -6,8 +6,10 @@ using SyncSpace.Application.ApplicationUser.Commands.ConfirmEmail;
 using SyncSpace.Application.ApplicationUser.Commands.CreateRefreshToken;
 using SyncSpace.Application.ApplicationUser.Commands.LoginUser;
 using SyncSpace.Application.ApplicationUser.Commands.RegisterUser;
+using SyncSpace.Application.ApplicationUser.Commands.ResendConfirmationLink;
 using SyncSpace.Domain.Exceptions;
 using SyncSpace.Domain.Helpers;
+using System.Net;
 
 namespace SyncSpace.API.Controllers
 {
@@ -29,23 +31,53 @@ namespace SyncSpace.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<AuthResponse>> RegisterUser([FromBody] RegisterUserCommand command)
+        public async Task<ActionResult> RegisterUser([FromBody] RegisterUserCommand command)
         {
-            command.UrlHelper = Url;
             var authResponse = await _mediator.Send(command);
-            return Ok(authResponse);
+
+            var response = new
+            {
+                message = authResponse.Message,
+                email = authResponse.Email,
+            };
+
+            apiResponse.IsSuccess = true;
+            apiResponse.Errors = null;
+            apiResponse.StatusCode = HttpStatusCode.OK;
+            apiResponse.Result = response;
+            return Ok(apiResponse);
         }
 
-        [HttpGet("{UserId}/{Token}/Confirm")]
+        [HttpGet("confirmEmail", Name = "ConfirmEmail")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<AuthResponse>> ConfirmEmail([FromRoute]string UserId, [FromRoute]string Token)
+        public async Task<ActionResult<ApiResponse>> ConfirmEmail([FromQuery] string UserId, [FromQuery] string Code)
         {
-            var authResponse = await _mediator.Send(new ConfirmEmailCommand(UserId,Token));
-            return Ok(authResponse);
+            var response = await _mediator.Send(new ConfirmEmailCommand(UserId, Code));
+            apiResponse.IsSuccess = true;
+            apiResponse.Errors = null;
+            apiResponse.StatusCode = HttpStatusCode.OK;
+            apiResponse.Result = response;
+            return Ok(apiResponse);
+        }
+
+        [HttpPost("resendConfirmationEmail")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ApiResponse>> ResendConfirmationEmail([FromBody] ResendConfirmationLinkCommand command)
+        {
+            var response = await _mediator.Send(command);
+            apiResponse.IsSuccess = true;
+            apiResponse.Errors = null;
+            apiResponse.StatusCode = HttpStatusCode.OK;
+            apiResponse.Result = response;
+            return Ok(apiResponse);
         }
 
 
@@ -55,14 +87,19 @@ namespace SyncSpace.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<AuthResponse>> LoginUser([FromBody] LoginUserCommand command)
+        public async Task<ActionResult> LoginUser([FromBody] LoginUserCommand command)
         {
             var authResponse = await _mediator.Send(command);
             if (!authResponse.IsAuthenticated)
                 return BadRequest(authResponse);
             if (!string.IsNullOrEmpty(authResponse.RefreshToken))
                 SetRefreshTokenInCookie(authResponse.RefreshToken, authResponse.RefreshTokenExpiration);
-            return Ok(authResponse);
+
+            apiResponse.IsSuccess = true;
+            apiResponse.Errors = null;
+            apiResponse.StatusCode = HttpStatusCode.OK;
+            apiResponse.Result = authResponse;
+            return Ok(apiResponse);
         }
 
         [HttpGet("refreshToken")]

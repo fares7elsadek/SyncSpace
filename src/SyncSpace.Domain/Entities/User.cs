@@ -12,6 +12,7 @@ public class User:IdentityUser
         VideoSyncEvents = new HashSet<VideoSyncEvents>();
     }
     public string? Avatar { get; set; }
+    public string? LastEmailConfirmationToken { get; set; }
     public ICollection<Rooms> HostingRooms { get; set; }
     public ICollection<RoomParticipants> ParticipatedRooms { get; set; }
     public ICollection<Messages> RoomMessages { get; set; }

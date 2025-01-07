@@ -12,6 +12,9 @@ using SyncSpace.Application.ApplicationUser;
 using SyncSpace.Application.Services;
 using SyncSpace.Application.Services.EmailService;
 using SyncSpace.Domain.Helpers;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using SyncSpace.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace SyncSpace.Application.Extensions;
 
@@ -52,6 +55,7 @@ public static class ServiceCollectionExtensions
             var actionContext = sp.GetRequiredService<IActionContextAccessor>().ActionContext;
             return new UrlHelper(actionContext);
         });
+        services.AddScoped<IEmailSender<User>, EmailService>();
     }
     public static void AddSerilog(this IHostBuilder host)
     {

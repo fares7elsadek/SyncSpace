@@ -3,24 +3,27 @@ using Microsoft.Extensions.Options;
 using SyncSpace.Domain.Helpers;
 using System.Net.Mail;
 using System.Net;
+using Serilog;
+using SyncSpace.Domain.Entities;
+using SyncSpace.Domain.Exceptions;
+using Microsoft.AspNetCore.Identity;
 
 namespace SyncSpace.Application.Services.EmailService;
 
-public class EmailService(IOptions<EmailProvider> options) : IEmailSender
+public class EmailService(IOptions<EmailProvider> options) : IEmailSender<User>
 {
     private readonly string _smtpEmail = options.Value.smptemail;
     private readonly string _smtpPassword = options.Value.smptpassword;
     private readonly string _smtpHost = "smtp.gmail.com";
-    private readonly int _smtpPort =  587;
+    private readonly int _smtpPort = 587;
     private readonly bool _enableSsl = true;
-
-    public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+    public async Task SendConfirmationLinkAsync(User user, string email, string confirmationLink)
     {
         using var message = new MailMessage
         {
             From = new MailAddress(_smtpEmail),
-            Subject = subject,
-            Body = htmlMessage,
+            Subject = "Confirm your email",
+            Body = EmailTemplate.ConfirmEmail(confirmationLink),
             IsBodyHtml = true
         };
 
@@ -38,15 +41,23 @@ public class EmailService(IOptions<EmailProvider> options) : IEmailSender
         }
         catch (SmtpException smtpEx)
         {
-            // Log or handle SMTP errors appropriately
-            Console.WriteLine($"SMTP Error: {smtpEx.Message}");
-            throw;
+            Log.Fatal($"SMTP Error: {smtpEx.Message}");
+            throw new CustomeException($"SMTP Error: {smtpEx.Message}");
         }
         catch (Exception ex)
         {
-            // Log general exceptions
-            Console.WriteLine($"Email Sending Error: {ex.Message}");
-            throw;
+            Log.Fatal($"SMTP Error: {ex.Message}");
+            throw new CustomeException($"SMTP Error: {ex.Message}");
         }
+    }
+
+    public Task SendPasswordResetCodeAsync(User user, string email, string resetCode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task SendPasswordResetLinkAsync(User user, string email, string resetLink)
+    {
+        throw new NotImplementedException();
     }
 }
