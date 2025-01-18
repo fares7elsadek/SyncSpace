@@ -10,6 +10,6 @@ public class VideoSyncEvents
     public Rooms Room { get; set; } = default!;
     public User User { get; set; } = default!;
     public EventType EventType { get; set; }
-    public decimal Timestamp { get; set; }
+    public double Time { get; set; }
     public DateTime TriggeredAt { get; set; }
 }

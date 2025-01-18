@@ -10,7 +10,7 @@ public class RoomDto
     public string RoomName { get; set; } = default!;
     public string HostUserId { get; set; } = default!;
     public string? VideoUrl { get; set; }
-    public decimal? CurrentTime { get; set; }
+    public double? CurrentTime { get; set; }
     public List<RoomParticipantDto> RoomParticipants { get; set; } = default!;
     public List<MessageDto> Messages { get; set; } = default!;
     public UserDto HostUser { get; set; } = default!;

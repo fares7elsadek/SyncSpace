@@ -12,9 +12,7 @@ public class VideosSyncEventsConfigurations : IEntityTypeConfiguration<VideoSync
         builder.Property(x => x.EventId)
             .HasDefaultValueSql("newid()");
 
-        builder.Property(x => x.Timestamp)
-            .HasColumnType("decimal")
-            .HasPrecision(10, 2);
+
         builder.Property(x => x.TriggeredAt)
             .HasDefaultValueSql("GETDATE()");
 

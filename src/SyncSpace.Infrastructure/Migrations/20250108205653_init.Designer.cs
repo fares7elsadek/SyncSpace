@@ -12,7 +12,7 @@ using SyncSpace.Infrastructure.Data;
 namespace SyncSpace.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241219232845_init")]
+    [Migration("20250108205653_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -232,9 +232,8 @@ namespace SyncSpace.Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<decimal?>("CurrentTime")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal");
+                    b.Property<double?>("CurrentVideoTime")
+                        .HasColumnType("float");
 
                     b.Property<string>("HostUserId")
                         .IsRequired()
@@ -284,6 +283,12 @@ namespace SyncSpace.Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("ForgetPasswordResetCodeRequestedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastEmailConfirmationToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -300,6 +305,9 @@ namespace SyncSpace.Infrastructure.Migrations
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("PasswordResetTokenRequestedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
@@ -344,9 +352,8 @@ namespace SyncSpace.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("Timestamp")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal");
+                    b.Property<double>("Time")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("TriggeredAt")
                         .ValueGeneratedOnAdd()
@@ -464,6 +471,43 @@ namespace SyncSpace.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("HostUser");
+                });
+
+            modelBuilder.Entity("SyncSpace.Domain.Entities.User", b =>
+                {
+                    b.OwnsMany("SyncSpace.Domain.Entities.RefreshToken", "RefreshTokens", b1 =>
+                        {
+                            b1.Property<string>("UserId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<DateTime>("CreatedOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime>("ExpiresOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime?>("RevokedOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("Token")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("UserId", "Id");
+
+                            b1.ToTable("RefreshToken");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("RefreshTokens");
                 });
 
             modelBuilder.Entity("SyncSpace.Domain.Entities.VideoSyncEvents", b =>

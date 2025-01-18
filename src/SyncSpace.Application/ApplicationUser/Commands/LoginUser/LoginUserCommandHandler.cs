@@ -34,6 +34,7 @@ public class LoginUserCommandHandler(UserManager<User> userManager,
 
         var roles = await userManager.GetRolesAsync(user);
         var authResponse = await authService.GetJwtToken(user, roles.ToList());
+        authResponse.avatar = user.Avatar;
         return authResponse;
     }
 }

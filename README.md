@@ -19,6 +19,9 @@
 
 ## **Overview**
 
+![SyncSpace](images/screen1.png)
+![SyncSpace](images/screen2.png)
+
 **SyncSpace** is a robust social media platform developed using **.NET 9.0**, designed to enable seamless communication and interaction. It incorporates:
 
 - **Clean Architecture principles** for maintainability.
@@ -45,9 +48,7 @@
 
 ## **Architecture**
 
-**Clean Architecture** is at the heart of SyncSpace:
-
-![](https://via.placeholder.com/800x400?text=Clean+Architecture+Diagram)
+**Clean Architecture** is at the heart of SyncSpace
 
 ### 🔧 Layers:
 

@@ -14,6 +14,7 @@ public class AuthResponse
     public string Username { get; set; } = default!;
     public string Email { get; set; } = default!;
     public List<string> Roles { get; set; }
+    public string avatar { get; set; }
     public string Token { get; set; } = default!;
     [JsonIgnore]
     public string RefreshToken { get; set; }

@@ -12,6 +12,7 @@ using SyncSpace.Application.Room.Commands.RemoveUserFromRoom;
 using SyncSpace.Application.Room.Commands.UpdateRoom;
 using SyncSpace.Application.Room.Queries.GetAllRooms;
 using SyncSpace.Application.Room.Queries.GetRoomById;
+using SyncSpace.Application.Room.Queries.GetUserRooms;
 using SyncSpace.Domain.Helpers;
 using System.Net;
 
@@ -178,6 +179,22 @@ namespace SyncSpace.API.Controllers
             apiResponse.IsSuccess = true;
             apiResponse.StatusCode = HttpStatusCode.OK;
             apiResponse.Result = room;
+            return Ok(apiResponse);
+        }
+
+        [HttpGet("user")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ApiResponse>> GetUserRooms()
+        {
+
+            var rooms = await _mediator.Send(new GetUserRoomsQuery());
+            apiResponse.IsSuccess = true;
+            apiResponse.StatusCode = HttpStatusCode.OK;
+            apiResponse.Result = rooms;
             return Ok(apiResponse);
         }
     }

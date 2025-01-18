@@ -91,9 +91,8 @@ public class RegisterUserCommandHandler(UserManager<User> userManager,
             ["userId"] = userId,
             ["code"] = code
         };
-        var confirmEmailEndpointName = "ConfirmEmail";
-        var confirmEmailUrl = linkGenerator.GetUriByName(httpContext, confirmEmailEndpointName, routeValues)
-            ?? throw new NotSupportedException($"Could not find endpoint named '{confirmEmailEndpointName}'.");
+        //var confirmEmailEndpointName = "ConfirmEmail";
+        var confirmEmailUrl = $"https://sync-space-frontend-sigma.vercel.app/confirm-email?userId={user.Id}&code={code}";
 
         if (user.Email == null)
             throw new CustomeException("User email is not defined");

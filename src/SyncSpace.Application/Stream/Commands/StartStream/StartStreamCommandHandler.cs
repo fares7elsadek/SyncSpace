@@ -21,7 +21,7 @@ public class StartStreamCommandHandler(IUserContext userContext,
             throw new NotFoundException(nameof(user),user.userId);
         room.VideoUrl = request.VideoUrl;
         room.IsPlaying = true;
-        room.CurrentVideoTime = TimeSpan.Zero;
+        room.CurrentVideoTime = 0;
         room.IsActive = true;
         unitOfWork.Room.Update(room);
         await unitOfWork.SaveAsync();

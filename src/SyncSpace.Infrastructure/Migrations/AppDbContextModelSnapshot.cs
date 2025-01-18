@@ -229,8 +229,8 @@ namespace SyncSpace.Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<TimeSpan?>("CurrentVideoTime")
-                        .HasColumnType("time");
+                    b.Property<double?>("CurrentVideoTime")
+                        .HasColumnType("float");
 
                     b.Property<string>("HostUserId")
                         .IsRequired()
@@ -349,9 +349,8 @@ namespace SyncSpace.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("Timestamp")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal");
+                    b.Property<double>("Time")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("TriggeredAt")
                         .ValueGeneratedOnAdd()

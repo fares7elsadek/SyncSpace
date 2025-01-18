@@ -7,5 +7,5 @@ public class SyncStreamCommand:IRequest
 {
     [JsonIgnore]
     public string? RoomId { get; set; } 
-    public TimeSpan Time { get; set; } 
+    public double Time { get; set; } 
 }

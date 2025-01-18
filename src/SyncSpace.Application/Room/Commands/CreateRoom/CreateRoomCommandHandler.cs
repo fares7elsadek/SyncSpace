@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.VisualBasic;
 using SyncSpace.Application.ApplicationUser;
 using SyncSpace.Application.Room.Dtos;
 using SyncSpace.Domain.Entities;
@@ -30,7 +29,14 @@ public class CreateRoomCommandHandler(IUserContext userContext
             RoomName = request.RoomName
         });
         await unitOfWork.SaveAsync();
-        var room = await unitOfWork.Room.GetOrDefalutAsync(r => r.RoomId == roomId);
+        var room = await unitOfWork.Room.GetOrDefalutAsync(r => r.RoomId == roomId,IncludeProperties: "Participants");
+        var newParticipant = new RoomParticipants
+        {
+            RoomId = roomId,
+            UserId = userId,
+        };
+        room.Participants.Add(newParticipant);
+        await unitOfWork.SaveAsync();
         var roomDto = mapper.Map<RoomDto>(room);
         return roomDto;
     }

@@ -17,138 +17,105 @@ public static class EmailTemplate
         <style type='text/css'>
             @media screen {{
                 @font-face {{
-                    font-family: 'Source Sans Pro';
+                    font-family: 'Inter';
                     font-style: normal;
                     font-weight: 400;
-                    src: local('Source Sans Pro Regular'),
-                        url(https://fonts.gstatic.com/s/sourcesanspro/v10/ODelI1aHBYDBqgeIAH2zlBM0YzuT7MdOe03otPbuUS0.woff)
-                            format('woff');
+                    src: url('https://fonts.gstatic.com/s/inter/v7/UcCO3FwrJCnkr2w6DGsTTc7Xnff34v9p.woff2') format('woff2');
                 }}
                 @font-face {{
-                    font-family: 'Source Sans Pro';
+                    font-family: 'Inter';
                     font-style: normal;
                     font-weight: 700;
-                    src: local('Source Sans Pro Bold'),
-                        url(https://fonts.gstatic.com/s/sourcesanspro/v10/toadOcfmlt9b38dHJxOBGFkQc6VGVFSmCnC_l7QZG60.woff)
-                            format('woff');
+                    src: url('https://fonts.gstatic.com/s/inter/v7/UcCO3FwrJCnkr2w6DGsTTc7Xnff34v9p.woff2') format('woff2');
                 }}
-            }}
-
-            body,
-            table,
-            td,
-            a {{
-                -ms-text-size-adjust: 100%;
-                -webkit-text-size-adjust: 100%;
-            }}
-
-            table,
-            td {{
-                mso-table-rspace: 0pt;
-                mso-table-lspace: 0pt;
-            }}
-
-            img {{
-                -ms-interpolation-mode: bicubic;
-            }}
-
-            a[x-apple-data-detectors] {{
-                font-family: inherit !important;
-                font-size: inherit !important;
-                font-weight: inherit !important;
-                line-height: inherit !important;
-                color: inherit !important;
-                text-decoration: none !important;
             }}
 
             body {{
+                margin: 0;
+                padding: 0;
                 width: 100% !important;
                 height: 100% !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                background: linear-gradient(to right, #FF20DE 20%, #18b7bd 50%);
+                background-color: #1a1a2e;
+                font-family: 'Inter', Helvetica, Arial, sans-serif;
+                color: #ffffff;
             }}
 
             table {{
                 border-collapse: collapse !important;
-            }}
-
-            a {{
-                color: #ffffff;
-            }}
-
-            img {{
-                height: auto;
-                line-height: 100%;
-                text-decoration: none;
-                border: 0;
-                outline: none;
+                width: 100%;
             }}
 
             .email-container {{
                 max-width: 600px;
                 margin: 0 auto;
-                background: #ffffff;
+                background-color: #1a1a2e;
                 border-radius: 8px;
                 overflow: hidden;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             }}
 
             .email-header {{
-                background: linear-gradient(to right, #FF20DE 20%, #18b7bd 50%);
+                background: #27293d;
                 text-align: center;
-                padding: 30px;
+                padding: 40px;
+                border-bottom: 3px solid #0079ff;
             }}
 
             .email-header img {{
-                width: 100px;
+                width: 120px;
             }}
 
             .email-body {{
-                background-color: #ffffff;
-                padding: 40px 30px;
+                padding: 30px;
             }}
 
             .email-body h1 {{
-                font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-                font-size: 26px;
+                font-size: 24px;
                 font-weight: 700;
                 text-align: center;
-                color: #333333;
                 margin-bottom: 20px;
+                color: #ffffff;
             }}
 
             .email-body p {{
-                font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
                 font-size: 16px;
                 line-height: 24px;
                 text-align: center;
-                color: #555555;
+                color: #dcdcdc;
             }}
 
             .email-button {{
-                margin-top: 30px;
                 text-align: center;
+                margin: 30px 0;
             }}
 
             .email-button a {{
                 display: inline-block;
-                background: linear-gradient(to right, #FF20DE, #18b7bd);
+                background: linear-gradient(90deg, #0079ff, #00c6ff);
                 color: #ffffff;
-                padding: 12px 30px;
-                font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+                padding: 14px 40px;
                 font-size: 16px;
                 font-weight: 700;
-                border-radius: 6px;
                 text-decoration: none;
+                border-radius: 8px;
+                transition: background 0.3s ease;
+            }}
+
+            .email-button a:hover {{
+                background: linear-gradient(90deg, #00c6ff, #0079ff);
+            }}
+
+            .divider {{
+                border-top: 1px solid #393e56;
+                margin: 20px 0;
             }}
 
             .email-footer {{
-                background: linear-gradient(to right, #FF20DE 20%, #18b7bd 50%);
-                padding: 20px;
+                background: #27293d;
                 text-align: center;
-                font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+                padding: 20px;
                 font-size: 14px;
-                color: #ffffff;
+                color: #a5a5a5;
             }}
 
             .email-footer p {{
@@ -156,22 +123,8 @@ public static class EmailTemplate
             }}
 
             .email-footer a {{
-                color: #ffffff;
+                color: #00c6ff;
                 text-decoration: none;
-            }}
-
-            .video-icon {{
-                text-align: center;
-                margin: 30px 0;
-            }}
-
-            .video-icon img {{
-                width: 60px;
-            }}
-
-            .divider {{
-                border-top: 1px solid #e2e8f0;
-                margin: 20px 0;
             }}
         </style>
     </head>
@@ -180,7 +133,7 @@ public static class EmailTemplate
             <!-- Header -->
             <div class='email-header'>
                 <img
-                    src='https://res.cloudinary.com/df6ylojjq/image/upload/v1736258888/SyncSpace_ldppb8.png'
+                    src='https://res.cloudinary.com/df6ylojjq/image/upload/v1737147779/logo_zlauub.png'
                     alt='SyncSpace Logo'
                 />
             </div>
@@ -189,39 +142,28 @@ public static class EmailTemplate
             <div class='email-body'>
                 <h1>Welcome to SyncSpace!</h1>
                 <p>
-                    Confirm your email address to unlock seamless video streaming with your friends. Enjoy synchronized
-                    viewing and real-time interactions.
+                    Confirm your email to start streaming content with your friends in sync. 
+                    Experience seamless viewing and interactive features with SyncSpace.
                 </p>
-                <div class='video-icon'>
-                    <img
-                        src='https://img.icons8.com/ios-filled/100/FF20DE/video.png'
-                        alt='Video Icon'
-                    />
-                </div>
                 <div class='email-button'>
                     <a href='{Url}' target='_blank'>Confirm Email</a>
                 </div>
                 <div class='divider'></div>
-                <p>
-                    If the button doesn't work, copy and paste the following link in your browser:
-                </p>
-                <p>
-                    <a href='{Url}' target='_blank'>{Url}</a>
-                </p>
+                <p>If the button doesn't work, copy and paste the link below:</p>
+                <p><a href='{Url}' target='_blank'>{Url}</a></p>
             </div>
 
             <!-- Footer -->
             <div class='email-footer'>
-                <p>
-                    You received this email because you signed up for SyncSpace. If you didn't request this, please
-                    ignore this email.
-                </p>
-                <p>© {DateTime.Now.Year} SyncSpace. All Rights Reserved.</p>
+                <p>You received this email because you signed up for SyncSpace.</p>
+                <p>© {DateTime.Now.Year} SyncSpace. All rights reserved.</p>
+                <p><a href='#'>Privacy Policy</a> | <a href='#'>Contact Us</a></p>
             </div>
         </div>
     </body>
 </html>
 ";
+
 
     }
 
