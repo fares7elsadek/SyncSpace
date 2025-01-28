@@ -32,7 +32,7 @@ namespace SyncSpace.API.Controllers.Tests
             });
         }
 
-
+        // test protection
         [Fact()]
         public async Task JoinRoom_Should_AddUserToGroupAndBroadcastMessage()
         {
