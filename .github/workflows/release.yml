@@ -46,6 +46,12 @@ jobs:
           name: api-artifact
           path: ./api
 
+      # Install MSDeploy
+      - name: Install MSDeploy
+        run: |
+          curl -o msdeploy.zip https://download.microsoft.com/download/1/F/4/1F4CCEC5-5E7C-4743-8BE8-44E29DD94B98/WebDeploy_amd64_en-US.msi
+          msiexec /i msdeploy.zip /quiet /qn /norestart
+
       - name: Deploy to monsterasp
         run: |
-              msdeploy.exe -verb:sync -source:package=./api -dest:publishSettings=${{ secrets.PUBLISH_PROFILE }}
+          msdeploy.exe -verb:sync -source:package=./api -dest:publishSettings=${{ secrets.PUBLISH_PROFILE }}
