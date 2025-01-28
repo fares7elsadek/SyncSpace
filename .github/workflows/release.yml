@@ -55,4 +55,3 @@ jobs:
           local-dir: ./api/
           server-dir: wwwroot/
           protocol: ftp
-          dry-run: true
