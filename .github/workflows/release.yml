@@ -25,33 +25,32 @@ jobs:
         run: dotnet build --no-restore -c release
 
       - name: Publish
-        run: dotnet publish ./src/SyncSpace.API/SyncSpace.API.csproj -o ./api --no-build -p:DeployOnBuild=true -p:WebPublishMethod=Package
+        run: dotnet publish ./src/SyncSpace.API/SyncSpace.API.csproj -o ./api --no-build
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4.6.0
         with:
           name: api-artifact
-          path: ./api
+          path: ./api/
 
-  deploy-prod:
-    environment: 
-      name: 'Production'
-      url: 'https://syncspace.runasp.net'
-    runs-on: windows-latest
+  deploy-dev:
+    runs-on: ubuntu-latest
     needs: build
     steps:
       - name: Download Build Artifact
         uses: actions/download-artifact@v4.1.8
         with:
           name: api-artifact
-          path: ./api
+          path: ./api/
 
-      # Install MSDeploy
-      - name: Install MSDeploy
-        run: |
-          curl -o msdeploy.zip https://download.microsoft.com/download/1/F/4/1F4CCEC5-5E7C-4743-8BE8-44E29DD94B98/WebDeploy_amd64_en-US.msi
-          msiexec /i msdeploy.zip /quiet /qn /norestart
-
-      - name: Deploy to monsterasp
-        run: |
-          msdeploy.exe -verb:sync -source:package=./api -dest:publishSettings=${{ secrets.PUBLISH_PROFILE }}
+      - name: Deploy to Monster ASP .NET via FTP/SFTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./api/
+          server-dir: wwwroot/
+          protocol: ftp
+          dangerous-clean-slate: true 
+          overwrite: true
