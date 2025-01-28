@@ -25,7 +25,7 @@ jobs:
         run: dotnet build --no-restore -c release
 
       - name: Publish
-        run: dotnet publish ./src/SyncSpace.API/SyncSpace.API.csproj -o ./api --no-build
+        run: dotnet publish ./src/SyncSpace.API/SyncSpace.API.csproj -o ./api --no-build -p:DeployOnBuild=true -p:WebPublishMethod=Package
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4.6.0
@@ -37,7 +37,7 @@ jobs:
     environment: 
       name: 'Production'
       url: 'https://syncspace.runasp.net'
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     steps:
       - name: Download Build Artifact
@@ -45,6 +45,7 @@ jobs:
         with:
           name: api-artifact
           path: ./api
+
       - name: Deploy to monsterasp
         run: |
-              dotnet msdeploy -verb:sync -source:package=./api -dest:publishSettings=${{ secrets.PUBLISH_PROFILE }}
+              msdeploy.exe -verb:sync -source:package=./api -dest:publishSettings=${{ secrets.PUBLISH_PROFILE }}
