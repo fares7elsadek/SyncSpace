@@ -1,4 +1,4 @@
-name: SyncSpace
+name: SyncSpace-CI
 
 on:
   pull_request:
