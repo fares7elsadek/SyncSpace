@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Serilog;
+using SyncSpace.Domain.Entities;
 using SyncSpace.Domain.Helpers;
 using SyncSpace.Domain.Repositories;
 using System.Collections.Concurrent;
@@ -29,12 +30,27 @@ namespace SyncSpace.API.SignalR.Hubs
                     LastUpdated = DateTime.UtcNow
                 };
             }
+            else
+            {
+                if(_roomStates[roomId].CurrentTime > 0 
+                    && !string.IsNullOrEmpty(_roomStates[roomId].VideoUrl))
+                {
+                    await Clients.Caller.SendAsync("StreamStarted", _roomStates[roomId].VideoUrl);
+                    await Clients.Caller.SendAsync("UpdateVideo",
+                        _roomStates[roomId].CurrentTime, _roomStates[roomId].IsPaused, DateTime.UtcNow);
+                }else if (!string.IsNullOrEmpty(_roomStates[roomId].VideoUrl))
+                {
+                    await Clients.Caller.SendAsync("StreamStarted", _roomStates[roomId].VideoUrl);
+                }
+            }
+        }
 
-            var roomState = _roomStates[roomId];
-
-            double currentPlaybackTime = GetCalculatedPlaybackTime(roomState);
-
-            await Clients.Caller.SendAsync("SyncVideo", currentPlaybackTime, roomState.IsPaused, DateTime.UtcNow);
+        public void UpdateCurrentTime(double time,string roomId)
+        {
+            if (_roomStates.ContainsKey(roomId))
+            {
+                _roomStates[roomId].CurrentTime = time;
+            }
         }
 
         public async Task UpdateVideoState(string roomId, double currentTime, bool isPaused)
@@ -80,6 +96,10 @@ namespace SyncSpace.API.SignalR.Hubs
 
         public async Task StartStream(string roomId, string streamUrl)
         {
+            if (_roomStates.ContainsKey(roomId))
+            {
+                _roomStates[roomId].VideoUrl = streamUrl;
+            }
             await Clients.Group(roomId).SendAsync("StreamStarted", streamUrl);
         }
 
