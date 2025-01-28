@@ -41,7 +41,7 @@ jobs:
          server: ${{ secrets.FTP_SERVER }}
          username: ${{ secrets.FTP_USERNAME }}
          password: ${{ secrets.FTP_PASSWORD }}
-         local-dir: ${{ env.DOTNET_ROOT }}/api  
+         local-dir: ${{ env.DOTNET_ROOT }}/api/  
          server-dir: wwwroot
          protocol: ftp
 
