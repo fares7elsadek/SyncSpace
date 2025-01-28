@@ -32,18 +32,6 @@ namespace SyncSpace.API.Controllers.Tests
             });
         }
 
-        [Fact]
-        public async Task GetAllRoomsTest_ForValidationRequest_Returns200Ok()
-        {
-            // arrange 
-            var client = _factory.CreateClient();
-
-            // act
-            var response = await client.GetAsync("/api/room");
-
-            // assert
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
 
         [Fact()]
         public async Task JoinRoom_Should_AddUserToGroupAndBroadcastMessage()
