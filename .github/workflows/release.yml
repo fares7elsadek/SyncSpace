@@ -6,6 +6,9 @@ on:
     - master
   workflow_dispatch:
 
+env:
+  DOTNET_ROOT: ${{ github.workspace }}/publish-output
+
 jobs:
   build:
     runs-on: ubuntu-latest
