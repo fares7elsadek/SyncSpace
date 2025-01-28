@@ -3,11 +3,8 @@ name: SyncSpace-CD
 on:
   push:
     branches:
-    - master
+      - master
   workflow_dispatch:
-
-env:
-  DOTNET_ROOT: ${{ github.workspace }}/publish-output
 
 jobs:
   build:
@@ -15,37 +12,43 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
+
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v4.2.0
         with:
           dotnet-version: 9.0.x
-      - name: restore dependenceis
+
+      - name: Restore Dependencies
         run: dotnet restore
+
       - name: Build
         run: dotnet build --no-restore -c release
-      - name: publish
-        run: dotnet publish ./src/SyncSpace.API/SyncSpace.API.csproj -o ${{ env.DOTNET_ROOT }}/api --no-build
-      - name: Upload a Build Artifact
+
+      - name: Publish
+        run: dotnet publish ./src/SyncSpace.API/SyncSpace.API.csproj -o ./api --no-build
+
+      - name: Upload Build Artifact
         uses: actions/upload-artifact@v4.6.0
         with:
           name: api-artifact
-          path: ${{env.DOTNET_ROOT}}/api
+          path: ./api
+
   deploy-dev:
     runs-on: ubuntu-latest
     needs: build
     steps:
-     - name: Download a Build Artifact
-       uses: actions/download-artifact@v4.1.8
-       with:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4.1.8
+        with:
           name: api-artifact
-     - name: Deploy to Monster ASP .NET via FTP/SFTP
-       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-       with:
-         server: ${{ secrets.FTP_SERVER }}
-         username: ${{ secrets.FTP_USERNAME }}
-         password: ${{ secrets.FTP_PASSWORD }}
-         local-dir: ${{ env.DOTNET_ROOT }}/api/
-         server-dir: wwwroot/
-         protocol: ftp
+          path: ./api
 
-    
+      - name: Deploy to Monster ASP .NET via FTP/SFTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./api
+          server-dir: wwwroot/
+          protocol: ftp
