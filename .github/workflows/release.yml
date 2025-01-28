@@ -45,13 +45,8 @@ jobs:
         with:
           name: api-artifact
           path: ./api
-
-      - name: Deploy to Monster ASP .NET via FTP/SFTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./api/
-          server-dir: wwwroot/
-          protocol: ftp
+      - name: Deploy to monsterasp
+        run: |
+          dotnet msdeploy publish \
+            -source:package=./api \
+            -dest:publishSettings=${{ secrets.PUBLISH_PROFILE }}
