@@ -30,8 +30,6 @@ namespace SyncSpace.API.Controllers.Tests
                     services.AddSingleton<IPolicyEvaluator, FakePolicyEvaluator>();
                 });
             });
-
-            _ = _factory.CreateClient();
         }
 
         [Fact]
