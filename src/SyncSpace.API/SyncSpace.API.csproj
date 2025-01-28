@@ -28,8 +28,6 @@
     <ProjectReference Include="..\SyncSpace.Infrastructure\SyncSpace.Infrastructure.csproj" />
   </ItemGroup>
 
-	<ItemGroup>
-		<InternalsVisibleTo Include="SyncSpace.APITests" />
-	</ItemGroup>
+	
 
 </Project>
