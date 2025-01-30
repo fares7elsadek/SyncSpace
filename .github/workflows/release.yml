@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v4.6.0
         with:
           name: api-artifact
-          path: ./api/
+          path: ./api
 
   deploy-dev:
     runs-on: ubuntu-latest
@@ -41,16 +41,10 @@ jobs:
         uses: actions/download-artifact@v4.1.8
         with:
           name: api-artifact
-          path: ./api/
+          path: ./api
 
-      - name: Deploy to Monster ASP .NET via FTP/SFTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy to Monster ASP .NET via publish profile
+        uses: Azure/webapps-deploy@v3.0.1
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./api/
-          server-dir: wwwroot/
-          protocol: ftp
-          dangerous-clean-slate: true 
-          overwrite: true
+          publish-profile: ${{ secrets.PUBLISH_PROFILE }}
+          package: ./api
