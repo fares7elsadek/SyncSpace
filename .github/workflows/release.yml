@@ -52,3 +52,5 @@ jobs:
           local-dir: ./api/
           server-dir: wwwroot/
           protocol: ftp
+          dangerous-clean-slate: true 
+          overwrite: true
